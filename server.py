@@ -12,6 +12,9 @@ def connected():
 def index():
     return render_template('SpaceGame.html')
 
+@app.route("/starblast.html")
+def game():
+    return render_template('starblast.html')
 if __name__ == "__main__":
         print("sever start")
         print("client loaded")
