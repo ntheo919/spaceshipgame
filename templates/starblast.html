@@ -10,7 +10,45 @@
 				console.log("hi")
 				socket.emit('connected');
 			});
+			var canvas = document.getElementById("canvas")
+			var context = canvas.getContext('2d');
+			var imageObj = new Image();
+			var x = canvas.width/2
+			var xvel = 0
+			var y = canvas.height/2
+			var yvel = 0
+			canvas.width=window.innerWidth;
+			canvas.height=window.innerHeight;
+			imageObj.onload = function() {
+				context.drawImage(imageObj, x, y, 50, 38.6)
+			}
+			imageObj.src = "http://image.ourclipart.com/377/3775135/uss-enterprise-clipart.jpg"
+			function move(e){
+				if(e.keycode == 38){
+					xvel +=10
+				}
+				else if(e.keycode == 40){
+					xvel -= 10
+				}
+				else if (e.keycode == 37){
+					yvel -= 10
+				}
+				else if (e.keycode = 39){
+					yvel +=10
+				}
+			}
+			window.addEventListener("keydown", move)
 		</script>
+		<style type="text/css">
+			canvas{background-image: url("https://i.ytimg.com/vi/KLY9WrlbzI8/maxresdefault.jpg");
+			background-size: cover;
+			background-repeat: no-repeat;
+			width: 100%;
+			height: 100%;
+			margin: 0;}
+
+		</style>
 		<canvas id="canvas"></canvas>
+
 	</body>
 </html>
