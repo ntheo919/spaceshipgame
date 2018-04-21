@@ -1,0 +1,22 @@
+{
+  "name": "spaceshipgame",
+  "description": "",
+  "scripts": {
+  },
+  "env": {
+    "space": {
+      "generator": "secret"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+
+  ]
+}
