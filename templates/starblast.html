@@ -3,52 +3,85 @@
 	<head>
 	</head>
 	<body>
+		<canvas id="canvas"></canvas>
+		<img src="http://1.bp.blogspot.com/-SqwrVIJoXXY/U9vXJm7TiiI/AAAAAAAABwU/DyQAiOXcIgU/s1600/blueships1.png" id="ship"></img>
+		<img src="https://orig00.deviantart.net/1aae/f/2015/132/4/e/simple_laser_beam_stock_by_thefirstfleet-d8t2ufs.png" id="laser"></img>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 		<script type="text/javascript" charset="utf-8">
-			var socket = io.connect();
-			socket.on('connect', function() {
-				console.log("hi")
-				socket.emit('connected');
-			});
-			var canvas = document.getElementById("canvas")
-			var context = canvas.getContext('2d');
-			var imageObj = new Image();
-			var x = canvas.width/2
+			var canvas = document.getElementById("canvas");
+			var img = document.getElementById("ship")
+			var c = canvas.getContext("2d");
+			var width = canvas.width;
+			var height = canvas.height;
+			var x = width/2;
+			var y = height/2;
+			var xVel = 0;
+			var yVel = 0;
+			var ax = width/2;
+			var ay = height/2;
 			var xvel = 0
-			var y = canvas.height/2
 			var yvel = 0
-			canvas.width=window.innerWidth;
-			canvas.height=window.innerHeight;
-			imageObj.onload = function() {
-				context.drawImage(imageObj, x, y, 50, 38.6)
+			var v = 2.5
+			var shoot = false
+
+			function move(){
+				c.clearRect(0, 0, width, height);
+				c.drawImage(img, x, y, 15, 15);
+				if(shoot){
+					c.drawImage(laser, ax, ay, 15, 15);
+				}
+				x += xVel
+				ax += xvel
+			  y += yVel
+			  ay += yvel
+			  requestAnimationFrame(move);
 			}
-			imageObj.src = "http://image.ourclipart.com/377/3775135/uss-enterprise-clipart.jpg"
-			function move(e){
-				if(e.keycode == 38){
-					xvel +=10
-				}
-				else if(e.keycode == 40){
-					xvel -= 10
-				}
-				else if (e.keycode == 37){
-					yvel -= 10
-				}
-				else if (e.keycode = 39){
-					yvel +=10
-				}
+
+			function xshoot(){
+				ax += v
+				shoot = true
+			    requestAnimationFrame(xshoot);
 			}
-			window.addEventListener("keydown", move)
+
+			function keydown(e){
+				if(e.keyCode == 37){
+			  	xVel += -2.5;
+			    yVel += 0;
+			  }else if(e.keyCode == 38){
+			  	yVel += -2.5;
+			    xVel += 0;
+			  }else if(e.keyCode == 39){
+			  	xVel += 2.5;
+			    yVel += 0;
+			  }else if(e.keyCode == 40){
+			  	yVel += 2.5;
+			    xVel += 0;
+			  }else if (e.keyCode == 32){
+			  	xshoot()
+			  }
+			}
+
+			document.addEventListener("keydown", keydown);
+
+			move();
+
 		</script>
 		<style type="text/css">
-			canvas{background-image: url("https://i.ytimg.com/vi/KLY9WrlbzI8/maxresdefault.jpg");
-			background-size: cover;
+		canvas{
+  			background-image: url("https://i.ytimg.com/vi/KLY9WrlbzI8/maxresdefault.jpg");
+  			background-size: cover;
 			background-repeat: no-repeat;
-			width: 100%;
-			height: 100%;
-			margin: 0;}
+			  width: 100%;
+			  height: 100%;
+			  margin: 0;
+			}
+
+		img{
+		  display: None;
+		}
+
 
 		</style>
-		<canvas id="canvas"></canvas>
 
 	</body>
 </html>
