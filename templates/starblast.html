@@ -5,9 +5,10 @@
 	<body>
 		<canvas id="canvas"></canvas>
 		<img src="http://1.bp.blogspot.com/-SqwrVIJoXXY/U9vXJm7TiiI/AAAAAAAABwU/DyQAiOXcIgU/s1600/blueships1.png" id="ship"></img>
-		<img src="https://orig00.deviantart.net/1aae/f/2015/132/4/e/simple_laser_beam_stock_by_thefirstfleet-d8t2ufs.png" id="laser"></img>
+		<img src="https://1.bp.blogspot.com/-pKGVMFPy6RI/V1qy7QKkGDI/AAAAAAAAAc0/WNFGSAB31kwJDEnNRGrIjV3IKjK94qy8wCLcB/s1600/3.png" id="laser"></img>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 		<script type="text/javascript" charset="utf-8">
+			var socket = io.connect();
 			var canvas = document.getElementById("canvas");
 			var img = document.getElementById("ship")
 			var c = canvas.getContext("2d");
@@ -24,23 +25,42 @@
 			var v = 2.5
 			var shoot = false
 
+			socket.on('connect', function() {
+				console.log("hi")
+				socket.emit('connected');
+				socket.emit('new ship', {
+					x:x,y:y,ax:ax,ay:ay
+				})
+			});
+			socket.on('update ship', function(data){
+				c.clearRect(0,0,width,height)
+				c.drawImage(img, data[0], data[1], 15, 15)
+				c.drawImage(laser, data[0], data[1], 15, 15)
+			})
+
+
 			function move(){
 				c.clearRect(0, 0, width, height);
 				c.drawImage(img, x, y, 15, 15);
 				if(shoot){
+					console.log(ax, ay);
 					c.drawImage(laser, ax, ay, 15, 15);
 				}
 				x += xVel
 				ax += xvel
 			  y += yVel
 			  ay += yvel
+			  //shoot = true
 			  requestAnimationFrame(move);
 			}
 
 			function xshoot(){
-				ax += v
+				ax = x
+				ay = y
+				xvel = 2.75
+				yvel = 0
 				shoot = true
-			    requestAnimationFrame(xshoot);
+			    //requestAnimationFrame(xshoot);
 			}
 
 			function keydown(e){

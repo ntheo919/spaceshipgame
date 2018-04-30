@@ -1,12 +1,20 @@
 from flask import *
 from flask_socketio import *
 import os
+count = 0
 app = Flask(__name__, static_folder="static")
 app.config["SECRET_KEY"] = 'secret!'
 socket = SocketIO(app)
+@socket.on('update player')
+def player(data):
+	pass
+@socket.on('new ship')
+def newShip(data):
+	emit('update ship',(data.x, data.y, data.ax, data.ay))
 @socket.on('connected')
 def connected():
-    print('recived message: 123abc')
+	count += 1
+    print('connection established')
     
 @app.route("/")
 def index():
