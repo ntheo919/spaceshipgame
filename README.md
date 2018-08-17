@@ -1,1 +1,2 @@
-Spaceship Game With Sockets
+**Spacegame**
+Don't forget to star it!
